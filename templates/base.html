@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial AI Guide</title>
+    <title>Financial AI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -148,16 +148,7 @@
     </script>
 </head>
 
-<body class="bg-gray-50 dark:bg-gray-900 h-screen flex overflow-hidden">
-    <!-- Dark mode toggle -->
-    <button id="theme-toggle" class="fixed top-4 right-4 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 z-50">
-        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-        </svg>
-        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path>
-        </svg>
-    </button>
+<body class="bg-gray-900 h-screen flex overflow-hidden dark">
     <!-- Sidebar -->
     <div class="w-72 bg-gradient-to-b from-primary-800 to-primary-700 text-white p-6 flex flex-col shadow-xl dark:from-gray-800 dark:to-gray-900">
         <div class="mb-8 flex items-center space-x-3">
@@ -249,129 +240,89 @@
             const queryForm = document.getElementById('query-form');
 
             queryForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const input = document.getElementById('query-input');
-            loadingIndicator.classList.remove('hidden');
-            queryForm.classList.add('opacity-50', 'pointer-events-none');
-            const query = input.value.trim();
-            if (!query) return;
+                e.preventDefault();
+                const input = document.getElementById('query-input');
+                loadingIndicator.classList.remove('hidden');
+                queryForm.classList.add('opacity-50', 'pointer-events-none');
+                const query = input.value.trim();
+                if (!query) return;
 
-            // Add user message to chat
-            addMessage('user', query);
-            input.value = '';
+                // Add user message to chat
+                addMessage('user', query);
+                input.value = '';
 
-            try {
-                const response = await fetch('http://localhost:5000/api/stock', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ query })
-                });
-                loadingIndicator.classList.add('hidden');
-                queryForm.classList.remove('opacity-50', 'pointer-events-none');
-                const data = await response.json();
+                try {
+                    const response = await fetch('http://localhost:5000/api/stock', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ query })
+                    });
+                    loadingIndicator.classList.add('hidden');
+                    queryForm.classList.remove('opacity-50', 'pointer-events-none');
+                    const data = await response.json();
 
-                // Add AI response to chat
-                if (data.error) {
-                    addMessage('assistant', `Error: ${data.error}`);
-                } else {
-                    addMessage('assistant', data.analysis);
-                }
-            } catch (error) {
-                addMessage('assistant', 'Sorry, there was an error processing your request.');
-            }
-        });
-
-            // Initialize dark mode based on system preference
-            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                document.documentElement.classList.add('dark');
-            }
-
-            // Dark mode toggle functionality
-            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-
-            // Change the icons inside the button based on previous settings
-            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                themeToggleLightIcon.classList.remove('hidden');
-                document.documentElement.classList.add('dark');
-            } else {
-                themeToggleDarkIcon.classList.remove('hidden');
-                document.documentElement.classList.remove('dark');
-            }
-
-            document.getElementById('theme-toggle').addEventListener('click', function() {
-                // Toggle icons
-                themeToggleDarkIcon.classList.toggle('hidden');
-                themeToggleLightIcon.classList.toggle('hidden');
-
-                // If is set in localStorage
-                if (localStorage.getItem('color-theme')) {
-                    if (localStorage.getItem('color-theme') === 'light') {
-                        document.documentElement.classList.add('dark');
-                        localStorage.setItem('color-theme', 'dark');
+                    // Add AI response to chat
+                    if (data.error) {
+                        addMessage('assistant', `Error: ${data.error}`);
                     } else {
-                        document.documentElement.classList.remove('dark');
-                        localStorage.setItem('color-theme', 'light');
+                        addMessage('assistant', data.analysis);
                     }
-                } else {
-                    if (document.documentElement.classList.contains('dark')) {
-                        document.documentElement.classList.remove('dark');
-                        localStorage.setItem('color-theme', 'light');
-                    } else {
-                        document.documentElement.classList.add('dark');
-                        localStorage.setItem('color-theme', 'dark');
-                    }
+                } catch (error) {
+                    addMessage('assistant', 'Sorry, there was an error processing your request.');
                 }
             });
 
-            function addMessage(role, content) {
-                const chatMessages = document.getElementById('chat-messages');
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `mb-6 ${role === 'user' ? 'text-right' : ''}`;
-
-                const messageBubble = document.createElement('div');
-                messageBubble.className = role === 'user'
-                    ? 'inline-block bg-primary-600 text-white rounded-lg px-6 py-3 max-w-3xl text-left prose prose-invert prose-lg shadow-md'
-                    : 'inline-block bg-gray-100 dark:bg-gray-800 dark:text-white rounded-lg px-6 py-3 max-w-3xl text-left prose dark:prose-invert prose-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors';
-
-                // Configure marked options for enhanced rendering
-                marked.setOptions({
-                    gfm: true,
-                    breaks: true,
-                    tables: true,
-                    pedantic: false,
-                    sanitize: false,
-                    smartLists: true,
-                    smartypants: true,
-                    highlight: function(code, lang) {
-                        if (lang && hljs.getLanguage(lang)) {
-                            try {
-                                return hljs.highlight(code, { language: lang }).value;
-                            } catch (err) {}
-                        }
-                        try {
-                            return hljs.highlightAuto(code).value;
-                        } catch (err) {}
-                        return code;
-                    }
-                });
-
-                // Parse and render markdown content
-                messageBubble.innerHTML = marked.parse(content);
-
-                // Initialize syntax highlighting for code blocks
-                messageBubble.querySelectorAll('pre code').forEach((block) => {
-                    hljs.highlightElement(block);
-                });
-
-                messageDiv.appendChild(messageBubble);
-                chatMessages.appendChild(messageDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
+            // Set dark mode by default
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('color-theme', 'dark');
         });
 
+        function addMessage(role, content) {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `mb-6 ${role === 'user' ? 'text-right' : ''}`;
+
+            const messageBubble = document.createElement('div');
+            messageBubble.className = role === 'user'
+                ? 'inline-block bg-primary-600 text-white rounded-lg px-6 py-3 max-w-3xl text-left prose prose-invert prose-lg shadow-md'
+                : 'inline-block bg-gray-100 dark:bg-gray-800 dark:text-white rounded-lg px-6 py-3 max-w-3xl text-left prose dark:prose-invert prose-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors';
+
+            // Configure marked options for enhanced rendering
+            marked.setOptions({
+                gfm: true,
+                breaks: true,
+                tables: true,
+                pedantic: false,
+                sanitize: false,
+                smartLists: true,
+                smartypants: true,
+                highlight: function(code, lang) {
+                    if (lang && hljs.getLanguage(lang)) {
+                        try {
+                            return hljs.highlight(code, { language: lang }).value;
+                        } catch (err) {}
+                    }
+                    try {
+                        return hljs.highlightAuto(code).value;
+                    } catch (err) {}
+                    return code;
+                }
+            });
+
+            // Parse and render markdown content
+            messageBubble.innerHTML = marked.parse(content);
+
+            // Initialize syntax highlighting for code blocks
+            messageBubble.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+
+            messageDiv.appendChild(messageBubble);
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
     </script>
 </body>
 
