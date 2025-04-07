@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial AI Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif']
+                },
+                extend: {
+                    whitespace: {
+                        'pre-line': 'pre-line'
+                    },
+                    typography: {
+                            DEFAULT: {
+                                css: {
+                                    'code::before': { content: '""' },
+                                    'code::after': { content: '""' },
+                                    'blockquote p:first-of-type::before': { content: '""' },
+                                    'blockquote p:last-of-type::after': { content: '""' },
+                                    'h1,h2,h3,h4,h5,h6': {
+                                        fontFamily: 'Inter, sans-serif',
+                                        fontWeight: '600',
+                                        marginTop: '1.5em',
+                                        marginBottom: '0.5em',
+                                        lineHeight: '1.2'
+                                    },
+                                    'h1': { fontSize: '2em' },
+                                    'h2': { fontSize: '1.5em' },
+                                    'h3': { fontSize: '1.25em' },
+                                    'pre': {
+                                        backgroundColor: '#f8f9fa',
+                                        padding: '1em',
+                                        borderRadius: '0.375rem',
+                                        overflow: 'auto',
+                                        marginTop: '1.25em',
+                                        marginBottom: '1.25em'
+                                    },
+                                    'code': {
+                                        backgroundColor: '#f3f4f6',
+                                        padding: '0.2em 0.4em',
+                                        borderRadius: '0.25rem',
+                                        fontSize: '0.875em'
+                                    },
+                                    'pre code': {
+                                        backgroundColor: 'transparent',
+                                        padding: '0',
+                                        fontSize: '0.875em'
+                                    },
+                                    table: {
+                                        borderCollapse: 'collapse',
+                                        width: '100%',
+                                        marginTop: '1.25em',
+                                        marginBottom: '1.25em',
+                                        fontSize: '0.875em'
+                                    },
+                                    'thead th': {
+                                        borderBottom: '2px solid #e5e7eb',
+                                        padding: '0.75em',
+                                        textAlign: 'left',
+                                        backgroundColor: '#f9fafb',
+                                        fontWeight: '600'
+                                    },
+                                    'tbody td': {
+                                        padding: '0.75em',
+                                        borderBottom: '1px solid #e5e7eb'
+                                    },
+                                    'tbody tr:hover': {
+                                        backgroundColor: '#f9fafb'
+                                    },
+                                    maxWidth: 'none'
+                                }
+                            },
+                            invert: {
+                                css: {
+                                    'code::before': { content: '""' },
+                                    'code::after': { content: '""' },
+                                    'blockquote p:first-of-type::before': { content: '""' },
+                                    'blockquote p:last-of-type::after': { content: '""' },
+                                    'h1,h2,h3,h4,h5,h6': {
+                                        fontFamily: 'Inter, sans-serif',
+                                        fontWeight: '600',
+                                        color: 'white'
+                                    },
+                                    a: { color: 'white' },
+                                    strong: { color: 'white' },
+                                    'ol > li::marker': { color: 'white' },
+                                    'ul > li::marker': { color: 'white' },
+                                    hr: { borderColor: 'white' },
+                                    blockquote: {
+                                        borderLeftColor: 'white',
+                                        color: 'white'
+                                    },
+                                    code: { color: 'white' },
+                                    'pre code': { color: 'white' },
+                                    pre: { color: 'white' },
+                                    maxWidth: 'none',
+                                    p: {
+                                        marginTop: '1.25em',
+                                        marginBottom: '1.25em',
+                                        lineHeight: '1.75'
+                                    },
+                                    'ul, ol': {
+                                        marginTop: '1.25em',
+                                        marginBottom: '1.25em',
+                                        paddingLeft: '1.625em'
+                                    },
+                                    li: {
+                                        marginTop: '0.5em',
+                                        marginBottom: '0.5em'
+                                    },
+                                    'h1, h2, h3, h4': {
+                                        color: '#111827',
+                                        fontWeight: '600',
+                                        lineHeight: '1.25'
+                                    }
+                                }
+                            }
+                        },
+                    colors: {
+                            primary: {
+                                50: '#f0f9ff',
+                                100: '#e0f2fe',
+                                200: '#bae6fd',
+                                300: '#7dd3fc',
+                                400: '#38bdf8',
+                                500: '#0ea5e9',
+                                600: '#0284c7',
+                                700: '#0369a1',
+                                800: '#075985',
+                                900: '#0c4a6e',
+                            }
+                        }
+                    }
+                }
+            }
+    </script>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 h-screen flex overflow-hidden">
+    <!-- Dark mode toggle -->
+    <button id="theme-toggle" class="fixed top-4 right-4 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 z-50">
+        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+        </svg>
+        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path>
+        </svg>
+    </button>
+    <!-- Sidebar -->
+    <div class="w-72 bg-gradient-to-b from-primary-800 to-primary-700 text-white p-6 flex flex-col shadow-xl dark:from-gray-800 dark:to-gray-900">
+        <div class="mb-8 flex items-center space-x-3">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+                <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+            </svg>
+            <h1 class="text-2xl font-bold tracking-tight">Financial AI</h1>
+        </div>
+
+        <!-- Recent Chats Section -->
+        <div class="flex-1 overflow-y-auto">
+            <h2 class="text-lg font-semibold mb-4 flex items-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-4l-4 4z"></path>
+                </svg>
+                <span>Recent Chats</span>
+            </h2>
+            <div class="space-y-2 pr-2">
+                <!-- Dummy Recent Chats -->
+                <div class="p-2 hover:bg-primary-600 rounded cursor-pointer">Tesla Stock Analysis</div>
+                <div class="p-2 hover:bg-primary-600 rounded cursor-pointer">Market Overview</div>
+                <div class="p-2 hover:bg-primary-600 rounded cursor-pointer">Apple Performance</div>
+                <div class="p-2 hover:bg-primary-600 rounded cursor-pointer">Crypto Market Update</div>
+                <div class="p-2 hover:bg-primary-600 rounded cursor-pointer">Portfolio Review</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col overflow-hidden bg-gray-50 dark:bg-gray-900">
+        <main class="flex-1 overflow-y-auto p-6 space-y-6" id="chat-messages">
+            {% block content %}{% endblock %}
+        </main>
+
+        <!-- Loading Indicator -->
+        <div id="loading-indicator" class="hidden max-w-4xl mx-auto mt-8">
+            <div class="bg-white/10 backdrop-blur-lg dark:bg-gray-800/30 rounded-2xl p-8 shadow-xl border border-gray-200/20 dark:border-gray-700/30 transition-all duration-300">
+                <div class="flex items-center justify-between space-x-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <div class="absolute inset-0 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full blur opacity-50 animate-pulse"></div>
+                            <div class="relative p-3 bg-gradient-to-r from-primary-500 to-primary-600 rounded-full shadow-lg">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+                                    <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="h-2.5 w-2.5 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full animate-bounce shadow-lg" style="animation-delay: 0ms"></div>
+                            <div class="h-2.5 w-2.5 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full animate-bounce shadow-lg" style="animation-delay: 150ms"></div>
+                            <div class="h-2.5 w-2.5 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full animate-bounce shadow-lg" style="animation-delay: 300ms"></div>
+                        </div>
+                    </div>
+                    <span class="text-sm font-medium text-gray-600 dark:text-gray-300">Processing your request...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="border-t border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-800 shadow-lg">
+            <form id="query-form" class="flex space-x-4 max-w-4xl mx-auto">
+                <div class="flex-1 relative">
+                    <input type="text" id="query-input" name="query" 
+                        class="w-full rounded-xl border border-gray-300 dark:border-gray-600 pl-4 pr-10 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400" 
+                        placeholder="Ask about stocks, market trends, or financial advice..." 
+                        required>
+                    <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
+                        </svg>
+                    </div>
+                </div>
+                <button type="submit" 
+                    class="bg-primary-600 text-white px-6 py-3 rounded-xl hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transform transition-transform duration-200 hover:scale-105 flex items-center space-x-2 shadow-md">
+                    <span>Send</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingIndicator = document.getElementById('loading-indicator');
+            const queryForm = document.getElementById('query-form');
+
+            queryForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('query-input');
+            loadingIndicator.classList.remove('hidden');
+            queryForm.classList.add('opacity-50', 'pointer-events-none');
+            const query = input.value.trim();
+            if (!query) return;
+
+            // Add user message to chat
+            addMessage('user', query);
+            input.value = '';
+
+            try {
+                const response = await fetch('http://localhost:5000/api/stock', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query })
+                });
+                loadingIndicator.classList.add('hidden');
+                queryForm.classList.remove('opacity-50', 'pointer-events-none');
+                const data = await response.json();
+
+                // Add AI response to chat
+                if (data.error) {
+                    addMessage('assistant', `Error: ${data.error}`);
+                } else {
+                    addMessage('assistant', data.analysis);
+                }
+            } catch (error) {
+                addMessage('assistant', 'Sorry, there was an error processing your request.');
+            }
+        });
+
+            // Initialize dark mode based on system preference
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.classList.add('dark');
+            }
+
+            // Dark mode toggle functionality
+            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+            // Change the icons inside the button based on previous settings
+            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                themeToggleLightIcon.classList.remove('hidden');
+                document.documentElement.classList.add('dark');
+            } else {
+                themeToggleDarkIcon.classList.remove('hidden');
+                document.documentElement.classList.remove('dark');
+            }
+
+            document.getElementById('theme-toggle').addEventListener('click', function() {
+                // Toggle icons
+                themeToggleDarkIcon.classList.toggle('hidden');
+                themeToggleLightIcon.classList.toggle('hidden');
+
+                // If is set in localStorage
+                if (localStorage.getItem('color-theme')) {
+                    if (localStorage.getItem('color-theme') === 'light') {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    }
+                } else {
+                    if (document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    }
+                }
+            });
+
+            function addMessage(role, content) {
+                const chatMessages = document.getElementById('chat-messages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `mb-6 ${role === 'user' ? 'text-right' : ''}`;
+
+                const messageBubble = document.createElement('div');
+                messageBubble.className = role === 'user'
+                    ? 'inline-block bg-primary-600 text-white rounded-lg px-6 py-3 max-w-3xl text-left prose prose-invert prose-lg shadow-md'
+                    : 'inline-block bg-gray-100 dark:bg-gray-800 dark:text-white rounded-lg px-6 py-3 max-w-3xl text-left prose dark:prose-invert prose-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors';
+
+                // Configure marked options for enhanced rendering
+                marked.setOptions({
+                    gfm: true,
+                    breaks: true,
+                    tables: true,
+                    pedantic: false,
+                    sanitize: false,
+                    smartLists: true,
+                    smartypants: true,
+                    highlight: function(code, lang) {
+                        if (lang && hljs.getLanguage(lang)) {
+                            try {
+                                return hljs.highlight(code, { language: lang }).value;
+                            } catch (err) {}
+                        }
+                        try {
+                            return hljs.highlightAuto(code).value;
+                        } catch (err) {}
+                        return code;
+                    }
+                });
+
+                // Parse and render markdown content
+                messageBubble.innerHTML = marked.parse(content);
+
+                // Initialize syntax highlighting for code blocks
+                messageBubble.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+
+                messageDiv.appendChild(messageBubble);
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+
+    </script>
+</body>
+
+</html>
