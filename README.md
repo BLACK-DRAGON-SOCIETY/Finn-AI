@@ -24,7 +24,7 @@ It combines **Gemini AI**, **Alpha Vantage**, and **yfinance** to deliver smart 
 
 ## 👥 Contributors
 - [Siddi Ganesh Vardhan](https://github.com/Ganesh-s-g-v)  
-- [Your Friend’s Name](https://github.com/siddharthasirapu)
+- [Your Friend’s Name](https://github.com/siddhardha-sirapu)
 
 ---
 
